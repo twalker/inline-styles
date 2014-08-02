@@ -1,0 +1,24 @@
+{
+  "name": "style2style",
+  "version": "0.0.1",
+  "main": "style2style.js",
+  "license": "MIT",
+  "keywords": [
+    "css",
+    "inliner"
+  ],
+  "ignore": [
+    ".jshintrc",
+    "test",
+    "node_modules",
+    "bower_components",
+    ".bowerrc",
+    "gulpfile.js"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "requirejs": "2.1.11",
+    "mocha": "1.21.3",
+    "chai": "1.9.1"
+  }
+}
