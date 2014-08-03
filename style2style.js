@@ -26,35 +26,33 @@
   //
   function inlineRule(el, rule){
     //console.log('setting', el, rule.style)
-    //el.style.cssText = rule.style;// HERE
-    //el.style.cssText = 'font-weight: bold'
-    console.log('cssText', rule.cssText);
-    console.log('style', rule.style);
+    // OMG: window.getMatchedCSSRules(document.body)
+    //console.log('cssText', rule.cssText);
+    //console.log('style', rule.style);
     var computed =  window.getComputedStyle(el);
     for(var i = 0; i < rule.style.length; i++){
       var prop = rule.style.item(i);
       var computedVal = computed.getPropertyValue(prop);
-      // good
-      //el.style.setProperty(prop, rule.style.getPropertyValue(prop))
-      console.log('setting', prop, computedVal)
-      el.style.setProperty(prop, computedVal);
-      // OMG: window.getMatchedCSSRules(document.body)
-      //console.log(rule.style.getPropertyValue(rule.style.item(i)));
-      //todo check if property has value
-
+      // if element's style doesn't have the property it it's attribute,
+      // then seit it to the computed value
+      if(el.style.getPropertyValue(prop) === null){
+        el.style.setProperty(prop, computedVal);
+      }
     }
-
-
-    //el.style = rule.style;
   }
 
   function inline(elStyle){
     //console.log('elStyle', elStyle)
     var doc = elStyle.ownerDocument;
     var rules = [].slice.call(elStyle.sheet.cssRules);
-
-    rules.forEach(function(rule){
-      //if(rule.selectorText === key) found = rule;
+    // loop through rules,
+    // select targeted els,
+    // set their inline style attribute with calulated properties
+    rules
+      // only STYLE_RULEs
+      // see: https://developer.mozilla.org/en-US/docs/Web/API/CSSRule#Properties
+      .filter(function(r){ return r.type == 1;})
+      .forEach(function(rule){
       var els = [].slice.call(doc.querySelectorAll(rule.selectorText));
       els.forEach(function(el){
         inlineRule(el, rule);
@@ -74,6 +72,9 @@
   },
   */
   return function(doc, options){
+    // TODO:
+    // - technique for getting window: iframe src=text/html? createDocument? docFragment?
+    // - options: {removeStyle, clone, window?}
     var dest = doc//= doc.cloneNode(true);
     // loop through style tags
     var tags = [].slice.call(dest.querySelectorAll('style'));
