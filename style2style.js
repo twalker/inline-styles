@@ -30,9 +30,15 @@
     //el.style.cssText = 'font-weight: bold'
     console.log('cssText', rule.cssText);
     console.log('style', rule.style);
+    var computed =  window.getComputedStyle(el);
     for(var i = 0; i < rule.style.length; i++){
       var prop = rule.style.item(i);
-      el.style.setProperty(prop, rule.style.getPropertyValue(prop))
+      var computedVal = computed.getPropertyValue(prop);
+      // good
+      //el.style.setProperty(prop, rule.style.getPropertyValue(prop))
+      console.log('setting', prop, computedVal)
+      el.style.setProperty(prop, computedVal);
+      // OMG: window.getMatchedCSSRules(document.body)
       //console.log(rule.style.getPropertyValue(rule.style.item(i)));
       //todo check if property has value
 
@@ -68,7 +74,7 @@
   },
   */
   return function(doc, options){
-    var dest = doc.cloneNode(true);
+    var dest = doc//= doc.cloneNode(true);
     // loop through style tags
     var tags = [].slice.call(dest.querySelectorAll('style'));
     tags.forEach(inline);
