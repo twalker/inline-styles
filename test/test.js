@@ -5,7 +5,7 @@ require.config({
   paths: {
     mocha: '../bower_components/mocha/mocha',
     chai: '../bower_components/chai/chai',
-    'style2style': '../style2style'
+    style2style: '../style2style'
   },
 
   shim: {
@@ -18,6 +18,8 @@ require.config({
 require(['mocha', 'chai', 'style2style'], function(mocha, chai, style2style){
   var assert = chai.assert
   mocha.setup('bdd');
+
+  console.log('style2style', style2style);
 
   function createFixture(){
     var el = document.createElement('section');

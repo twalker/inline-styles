@@ -15,8 +15,7 @@
   }
 }(this, function(){
 
-  var style2style {}
-
+  var style2style = {}
   return style2style;
 
 }));
