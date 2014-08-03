@@ -19,12 +19,14 @@ require(['mocha', 'chai', 'style2style'], function(mocha, chai, style2style){
   var assert = chai.assert
   mocha.setup('bdd');
 
-  console.log('style2style', style2style);
 
-  function createFixture(){
-    var el = document.createElement('section');
+  function createFixture(done){
+    var el = document.createElement('iframe');
     el.setAttribute('id', 'fixture');
-    el.innerHTML = '<h1>hello</h1><p><a href="#">world</a><i>!</i></p>';
+    el.src = 'fixture.html';
+    el.addEventListener('load', function(e){
+      done();
+    })
     document.body.appendChild(el);
   }
 
@@ -43,8 +45,10 @@ require(['mocha', 'chai', 'style2style'], function(mocha, chai, style2style){
     afterEach(destroyFixture);
 
     it('should exist', function(){
+      var doc = getFixture().contentDocument;
+      assert.isFunction(style2style);
 
-      assert.isObject(style2style);
+      console.log(style2style(doc).body.innerHTML);
 
     });
 

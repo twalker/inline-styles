@@ -1,15 +1,12 @@
 var gulp = require('gulp')
   , bump = require('gulp-bump')
   , jshint = require('gulp-jshint')
-  , livereload = require('gulp-livereload')
-  , lr = require('tiny-lr')
-  , server = lr();
+  , livereload = require('gulp-livereload');
 
 gulp.task('js', function() {
-  return gulp.src(['./style2style.js','./test/style2style.js'])
+  return gulp.src(['./style2style.js','./test/*.js'])
     .pipe(jshint())
-    .pipe(jshint.reporter('jshint-stylish'))
-    .pipe(livereload(server));
+    .pipe(jshint.reporter('jshint-stylish'));
 });
 
 // Increment packages by patch point
@@ -19,11 +16,17 @@ gulp.task('bump', function(){
     .pipe(gulp.dest('./'));
 });
 
+
 gulp.task('watch', function(){
-  server.listen(35729, function (err) {
-    if (err) return console.log(err);
-    gulp.watch(['./style2style.js','./test/style2style.js'], ['js']);
+  livereload.listen();
+  gulp.watch([
+    './*.js',
+    './test/*.js',
+  ]).on('change', function(file){
+    //console.log(file.path + ' changed')
+    livereload.changed(file)
   });
+
 });
 
 gulp.task('default', function(){
