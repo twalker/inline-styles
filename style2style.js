@@ -1,6 +1,6 @@
 /**
  * style2style
- * Inilines styles from style tags to style attributes
+ * Inlines styles from style tags to style attributes
  *
  *
  */
@@ -15,15 +15,10 @@
   }
 }(this, function(){
 
-  // get elements for selector
-  // convert elements 2 array
-  // set attr
-  //
-  //
-  // select4Rule: function(rule) {
-  //   return rule.querySelectorAll(rule.selectorText);
-  // }
-  //
+  function removeElement(el){
+    return el.parentNode.removeChild(el);
+  }
+
   function inlineRule(el, rule){
     //console.log('setting', el, rule.style)
     // OMG: window.getMatchedCSSRules(document.body)
@@ -41,7 +36,7 @@
     }
   }
 
-  function inline(elStyle){
+  function inlineStyle(elStyle){
     //console.log('elStyle', elStyle)
     var doc = elStyle.ownerDocument;
     var rules = [].slice.call(elStyle.sheet.cssRules);
@@ -60,25 +55,17 @@
     })
   }
 
-  /*
-  // finds a CSSStyleRule for the provided selector text
-  getRule: function(key){
-    var rules = [].slice.call(this.target.sheet.cssRules),
-        found;
-    rules.forEach(function(rule){
-      if(rule.selectorText === key) found = rule;
-    })
-    return found;
-  },
-  */
-  return function(doc, options){
+  return function inliner(doc, options){
     // TODO:
     // - technique for getting window: iframe src=text/html? createDocument? docFragment?
     // - options: {removeStyle, clone, window?}
     var dest = doc//= doc.cloneNode(true);
+    options || (options = {removeStyle: true});
     // loop through style tags
     var tags = [].slice.call(dest.querySelectorAll('style'));
-    tags.forEach(inline);
+    tags.forEach(inlineStyle);
+
+    if(options.removeStyle) tags.forEach(removeElement)
 
     return dest;
   };

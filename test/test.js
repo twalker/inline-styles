@@ -49,6 +49,7 @@ require(['mocha', 'chai', 'style2style'], function(mocha, chai, style2style){
       assert.isFunction(style2style);
 
       console.log(style2style(doc).body.innerHTML);
+      //console.log('styletags', doc.querySelectorAll('style').length)
 
     });
 
