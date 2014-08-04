@@ -17,7 +17,8 @@
   ],
   "dependencies": {},
   "devDependencies": {
-    "requirejs": "2.1.11",
+    "requirejs": "2.1.14",
+    "requirejs-text": "~2.0.12",
     "mocha": "1.21.3",
     "chai": "1.9.1"
   }
