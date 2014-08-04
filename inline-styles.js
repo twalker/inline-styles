@@ -7,15 +7,18 @@
  * Document needs to be in a window for styles to be calculated properly.
  *
  * @example
- * styliner(document)
+ * inlineStyles(window.document)
  *
  * By default, style/link tags are inlined, then removed from the document.
- * These options can be opted out of with a `data-styliner` attribute.
+ * These options can be opted out of with a `data-inline-options` attribute.
+ * Preserved tags will be inlined, but not removed from the document.
+ * Ignored tags will be disabled during inlining, and restored after inlining.
+ *
  * @example
- * <style type="text/css" data-styliner='{"preserve": true, "ignore": true}'>...</style>
+ * <style type="text/css" data-inline-options='{"preserve": true, "ignore": true}'>...</style>
  *
  * TODO:
- * - ?? anyting special for media rules MEDIA_RULE = 4 ??
+ * - ?? anything special for media rules MEDIA_RULE = 4 ??
  * - ?? pseudo selectors (2nd arg to getComputedStyle)??
  * - ?? should tags be moved from head to body??
  *
@@ -44,7 +47,7 @@
   // parses the styliner options attribute
   // default is to inline the styles and remove the source element.
   function parseOptions(el){
-    var raw = el.getAttribute('data-styliner');
+    var raw = el.getAttribute('data-inline-options');
     var opts = raw ? JSON.parse(raw) : {};
     return extend(opts, { ignore: false, preserve: false });
   }
@@ -93,20 +96,28 @@
   }
 
   // takes a rendered document and inlines its stylesheets.
-  return function styliner(doc){
+  return function inlineStyles(doc){
 
     var tags = [].slice.call(doc.querySelectorAll('style, link[rel="stylesheet"]')),
         tags2inline = [],
-        tags2remove = [];
+        tags2remove = [],
+        tags2ignore = [];
 
     tags.forEach(function processTag(el){
       var opts = parseOptions(el);
-      if(!opts.ignore) tags2inline.push(el);
+      // ignore and inline tags are mutually exclusive
+      (opts.ignore ? tags2ignore : tags2inline).push(el);
       if(!opts.preserve) tags2remove.push(el);
     });
 
+    // disable ignored tags so they're not a part of the computedStyles
+    tags2ignore.forEach(function(el){el._prevDisabled = el.disabled;  el.disabled = true; });
+
     // inline link/style rules
     tags2inline.forEach(inlineStyle);
+
+    // re-enable ignored tags, restoring their original disabled state
+    tags2ignore.forEach(function(el){ el.disabled = el._prevDisabled;});
 
     // cleanup
     tags2remove.forEach(removeElement);

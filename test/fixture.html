@@ -1,27 +1,24 @@
 <html>
 <head>
-
 <link rel="stylesheet" href="../test/fixture.css" />
 <style>
   #para {
-    color: green;
+    color: rgb(0, 255, 0);
   }
   p.super {
-    color: red;
+    color: rgb(255, 0, 0);
     text-align: right;
-    margin-top: 15px;
-    font-weight: normal;
   }
   p {
-    color: blue;
+    color: rgb(0, 0, 255);
     font-weight: bold;
-    font-family: sans-serif, Arial;
-    margin: 5px 0.5em;
   }
 </style>
 </head>
 <body>
-  <p id="para" class="super" style="color:purple;">hello</p>
-  <p>world</p>
+  <p>regular</p>
+  <p class="super">with className</p>
+  <p id="para">with ID</p>
+  <p style="color:purple;">existing inline attribute</p>
 </body>
 </html>
