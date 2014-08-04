@@ -4,7 +4,7 @@
  *
  * TODO:
  *
- * - link tags
+ * x link tags (use stylesheets collection instead)
  * - media rules MEDIA_RULE = 4;
  * - pseudo selectors (2nd arg to getComputedStyle)
  *
@@ -99,9 +99,17 @@
       inlineSheet(doc, sheets.item(i))
     }
     // cleanup
+    // TODO: be mindful of media-queries and other styling to keep in the head
     if(options.remove) {
+      // remove all style tags and links
       [].slice.call(doc.querySelectorAll('style,link[rel="stylesheet"]'))
       .forEach(removeElement);
+
+      // remove all classNames
+      [].slice.call(doc.querySelectorAll('[class]'))
+        .forEach(function(el){
+          el.removeAttribute('class');
+        });
     }
 
     return dest;
