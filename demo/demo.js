@@ -4,11 +4,11 @@
 require.config({
   paths: {
     text: '../bower_components/requirejs-text/text',
-    style2style: '../style2style'
+    'inline-styles': '../inline-styles'
   }
 });
 
-require(['style2style', 'text!../test/fixture.html'], function(style2style, fixture){
+require(['inline-styles', 'text!../test/fixture.html'], function(inlineStyles, fixture){
 
   var iframe = document.getElementById('iframe');
   var form = document.querySelector('form');
@@ -27,7 +27,7 @@ require(['style2style', 'text!../test/fixture.html'], function(style2style, fixt
     e.preventDefault();
     var doc = iframe.contentDocument;
 
-    style2style(doc);
+    inlineStyles(doc);
     form.querySelector('[name="dest"]').value = doc.head.outerHTML + '\n' + doc.body.outerHTML;
 
   };

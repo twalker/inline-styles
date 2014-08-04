@@ -5,7 +5,7 @@ require.config({
   paths: {
     mocha: '../bower_components/mocha/mocha',
     chai: '../bower_components/chai/chai',
-    style2style: '../style2style'
+    'inline-styles': '../inline-styles'
   },
 
   shim: {
@@ -15,7 +15,7 @@ require.config({
   }
 });
 
-require(['mocha', 'chai', 'style2style'], function(mocha, chai, style2style){
+require(['mocha', 'chai', 'inline-styles'], function(mocha, chai, inlineStyles){
   var assert = chai.assert
   mocha.setup('bdd');
 
@@ -39,16 +39,16 @@ require(['mocha', 'chai', 'style2style'], function(mocha, chai, style2style){
     fixture.parentNode.removeChild(fixture);
   }
 
-  describe('style2style(doc)', function(){
+  describe('inlineStyles(doc)', function(){
 
     beforeEach(createFixture);
     afterEach(destroyFixture);
 
     it('should exist', function(){
       var doc = getFixture().contentDocument;
-      assert.isFunction(style2style);
+      assert.isFunction(inlineStyles);
 
-      console.log(style2style(doc, {remove: true}).body.innerHTML);
+      console.log(inlineStyles(doc, {remove: true}).body.innerHTML);
       console.log(doc.head.innerHTML)
 
     });

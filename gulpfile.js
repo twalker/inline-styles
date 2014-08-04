@@ -1,10 +1,10 @@
-var gulp = require('gulp')
-  , bump = require('gulp-bump')
-  , jshint = require('gulp-jshint')
-  , livereload = require('gulp-livereload');
+var gulp = require('gulp'),
+    bump = require('gulp-bump'),
+    jshint = require('gulp-jshint'),
+    livereload = require('gulp-livereload');
 
 gulp.task('js', function() {
-  return gulp.src(['./style2style.js','./test/*.js'])
+  return gulp.src(['./inline-styles.js','./test/*.js'])
     .pipe(jshint())
     .pipe(jshint.reporter('jshint-stylish'));
 });

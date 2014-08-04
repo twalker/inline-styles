@@ -1,5 +1,5 @@
 /**
- * style2style
+ * inlineStyles
  * Inlines styles from style/link tags to style attributes.
  *
  * Uses values from computed values instead of style properties, to take advantage
@@ -28,7 +28,7 @@
     define([], factory);
   } else {
     // Browser globals
-    root.style2style = factory();
+    root.inlineStyles = factory();
   }
 }(this, function(){
 

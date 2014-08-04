@@ -1,10 +1,10 @@
 {
-  "name": "style2style",
+  "name": "inline-styles",
   "version": "0.0.1",
-  "main": "style2style.js",
+  "main": "inline-styles.js",
   "license": "MIT",
   "keywords": [
-    "css",
+    "style",
     "inliner"
   ],
   "ignore": [

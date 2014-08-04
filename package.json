@@ -1,9 +1,9 @@
 {
-  "name": "style2style",
+  "name": "inline-styles",
   "version": "0.0.1",
   "repository": {
     "type": "git",
-    "url": "git://github.com/twalker/style2style.git"
+    "url": "git://github.com/twalker/inline-styles.git"
   },
   "dependencies": {},
   "devDependencies": {
