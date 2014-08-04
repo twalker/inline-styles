@@ -1,8 +1,9 @@
 inline-styles
 =============
 
-Inline styles from style tags to style attributes, **in the browser**.
+Transplants styles from style/link tags to style attributes, in the browser, for use in email.
 
+before:
 ```html
 <html>
   <head>
@@ -28,8 +29,9 @@ Inline styles from style tags to style attributes, **in the browser**.
 </html>
 ```
 
-inlineStyles(window.document);
+`inlineStyles(window.document);`
 
+transformed:
 ```html
 <html>
   <head></head>
