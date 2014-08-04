@@ -48,8 +48,8 @@ require(['mocha', 'chai', 'style2style'], function(mocha, chai, style2style){
       var doc = getFixture().contentDocument;
       assert.isFunction(style2style);
 
-      console.log(style2style(doc).body.innerHTML);
-      //console.log('styletags', doc.querySelectorAll('style').length)
+      console.log(style2style(doc, {remove: true}).body.innerHTML);
+      console.log(doc.head.innerHTML)
 
     });
 
