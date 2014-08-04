@@ -1,13 +1,23 @@
 /**
  * style2style
- * Inlines styles from style tags to style attributes
+ * Inlines styles from style/link tags to style attributes.
+ *
+ * Uses values from computed values instead of style properties, to take advantage
+ * of browsers css specificity/cascade implementation.
+ * Document needs to be in a window for styles to be calculated properly.
+ *
+ * @example
+ * styliner(document)
+ *
+ * By default, style/link tags are inlined, then removed from the document.
+ * These options can be opted out of with a `data-styliner` attribute.
+ * @example
+ * <style type="text/css" data-styliner='{"preserve": true, "ignore": true}'>...</style>
  *
  * TODO:
- *
- * x link tags (use stylesheets collection instead)
- * - media rules MEDIA_RULE = 4;
- * - pseudo selectors (2nd arg to getComputedStyle)
- *
+ * - ?? anyting special for media rules MEDIA_RULE = 4 ??
+ * - ?? pseudo selectors (2nd arg to getComputedStyle)??
+ * - ?? should tags be moved from head to body??
  *
  *
  */
@@ -22,97 +32,86 @@
   }
 }(this, function(){
 
+  // utility to assign defaults to options
+  function extend(target, source){
+    target = target || {};
+    for (var prop in source) {
+      if(!target.hasOwnProperty(prop)) target[prop] = source[prop];
+    }
+    return target;
+  }
+
+  // parses the styliner options attribute
+  // default is to inline the styles and remove the source element.
+  function parseOptions(el){
+    var raw = el.getAttribute('data-styliner');
+    var opts = raw ? JSON.parse(raw) : {};
+    return extend(opts, { ignore: false, preserve: false });
+  }
+
+  // remove element from the dom
   function removeElement(el){
     return el.parentNode.removeChild(el);
   }
 
+  // inlines a rule onto an element's style attribute;
+  // setting the element's inline style attribute with calulated properties.
   function inlineRule(el, rule){
     //console.log('setting', el, rule.style)
-    // OMG: window.getMatchedCSSRules(document.body)
     //console.log('cssText', rule.cssText);
     //console.log('style', rule.style);
-    var computed =  window.getComputedStyle(el);
+    var computed = window.getComputedStyle(el);
     for(var i = 0; i < rule.style.length; i++){
       var prop = rule.style.item(i);
       var computedVal = computed.getPropertyValue(prop);
       // if element's style attribute doesn't have this property,
-      // then seit it to the computed value
-      if(el.style.getPropertyValue(prop) === null){
+      // then set it to the computed value
+      //console.log('is prop null', el.style.getPropertyValue(prop))
+      if(!el.style.getPropertyValue(prop)){
         el.style.setProperty(prop, computedVal);
       }
     }
   }
-  /*MEDIA_RULE = 4;
+
+  // Loops through a stylesheets rules,
+  // selects the rule's targeted elements,
+  // and inlines the rule.
   function inlineStyle(elStyle){
     //console.log('elStyle', elStyle)
     var doc = elStyle.ownerDocument;
     var rules = [].slice.call(elStyle.sheet.cssRules);
-    // loop through rules,
-    // select targeted els,
-    // set their inline style attribute with calulated properties
     rules
       // only STYLE_RULEs
       // see: https://developer.mozilla.org/en-US/docs/Web/API/CSSRule#Type_constants
       .filter(function(r){ return r.type == 1;})
       .forEach(function(rule){
-      var els = [].slice.call(doc.querySelectorAll(rule.selectorText));
-      els.forEach(function(el){
-        inlineRule(el, rule);
-      })
-    })
-  }
-  */
-
-  function inlineSheet(doc, sheet){
-    //console.log('elStyle', elStyle)
-    var rules = [].slice.call(sheet.cssRules);
-    // loop through rules,
-    // select targeted els,
-    // set their inline style attribute with calulated properties
-    rules
-      // only STYLE_RULEs
-      // see: https://developer.mozilla.org/en-US/docs/Web/API/CSSRule#Properties
-      .filter(function(r){ return r.type == 1;})
-      .forEach(function(rule){
-        var els = [].slice.call(doc.querySelectorAll(rule.selectorText));
-        els.forEach(function(el){ inlineRule(el, rule); })
+        [].slice.call(doc.querySelectorAll(rule.selectorText))
+          .forEach(function(el){
+            inlineRule(el, rule);
+          })
     })
   }
 
+  // takes a rendered document and inlines its stylesheets.
+  return function styliner(doc){
 
-  return function inliner(doc, options){
-    // TODO:
-    // - technique for getting window: iframe src=text/html? createDocument? docFragment?
-    // - options: {removeStyle, clone, window?}
-    var dest = doc;//doc.cloneNode(true);
-    options || (options = {remove: true});
-    // loop through style tags
-    // var tags = [].slice.call(dest.querySelectorAll('style'));
-    // tags.forEach(inlineStyle);
-    //if(options.removeStyle) tags.forEach(removeElement)
+    var tags = [].slice.call(doc.querySelectorAll('style, link[rel="stylesheet"]')),
+        tags2inline = [],
+        tags2remove = [];
 
-    // links
-    var sheets = doc.styleSheets;
-    console.log('sheets', sheets)
-    for(var i = 0, len = sheets.length; i < len; i++){
-      console.log('sheet', sheets.item(i))
-      inlineSheet(doc, sheets.item(i))
-    }
+    tags.forEach(function processTag(el){
+      var opts = parseOptions(el);
+      if(!opts.ignore) tags2inline.push(el);
+      if(!opts.preserve) tags2remove.push(el);
+    });
+
+    // inline link/style rules
+    tags2inline.forEach(inlineStyle);
+
     // cleanup
-    // TODO: be mindful of media-queries and other styling to keep in the head
-    if(options.remove) {
-      // remove all style tags and links
-      [].slice.call(doc.querySelectorAll('style,link[rel="stylesheet"]'))
-      .forEach(removeElement);
+    tags2remove.forEach(removeElement);
 
-      // remove all classNames
-      [].slice.call(doc.querySelectorAll('[class]'))
-        .forEach(function(el){
-          el.removeAttribute('class');
-        });
-    }
-
-    return dest;
+    return doc;
   };
 
 }));

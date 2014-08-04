@@ -27,7 +27,7 @@ require(['style2style', 'text!../test/fixture.html'], function(style2style, fixt
     e.preventDefault();
     var doc = iframe.contentDocument;
 
-    style2style(doc, JSON.parse(form.querySelector('[name="options"]').value));
+    style2style(doc);
     form.querySelector('[name="dest"]').value = doc.head.outerHTML + '\n' + doc.body.outerHTML;
 
   };
