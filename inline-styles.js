@@ -12,7 +12,7 @@
  * By default, style/link tags are inlined, then removed from the document.
  * These options can be opted out of with a `data-inline-options` attribute.
  * Preserved tags will be inlined, but not removed from the document.
- * Ignored tags will be disabled during inlining, and restored after inlining.
+ * Ignored tags will be disabled during inlining.
  *
  * @example
  * <style type="text/css" data-inline-options='preserve, ignore'>...</style>

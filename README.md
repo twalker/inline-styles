@@ -54,11 +54,15 @@ Also, all `style`/`link` elements are active during `window.getComputedStyle`. T
   /* 
   media queries, pseudo selectors, and other rules 
   that either cannot be inlined, or will taint the 
-  inlined style.
+  computed style.
   */
 </style>
 ```
-Any preserved `style`/`link` elements will be moved inside the `body` tag and have the `data-inline-options` removed.
+
+`preserve` will be inlined, but not removed from the document.  
+`ignore` will be disabled during inlining.
+
+Any preserved `style`/`link` elements will also be moved inside the `body` tag and have the `data-inline-options` attribute removed.
 
 -----------------------------------------------
 
