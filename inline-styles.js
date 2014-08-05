@@ -15,7 +15,7 @@
  * Ignored tags will be disabled during inlining, and restored after inlining.
  *
  * @example
- * <style type="text/css" data-inline-options='{"preserve": true, "ignore": true}'>...</style>
+ * <style type="text/css" data-inline-options='preserve, ignore}'>...</style>
  *
  * TODO:
  * - ?? anything special for media rules MEDIA_RULE = 4 ??
@@ -35,21 +35,20 @@
   }
 }(this, function(){
 
-  // utility to assign defaults to options
-  function extend(target, source){
-    target = target || {};
-    for (var prop in source) {
-      if(!target.hasOwnProperty(prop)) target[prop] = source[prop];
-    }
-    return target;
+// utility to assign defaults to options
+function extend(target, source){
+  target = target || {};
+  for (var prop in source) {
+    if(!target.hasOwnProperty(prop)) target[prop] = source[prop];
   }
+  return target;
+}
 
   // parses the styliner options attribute
   // default is to inline the styles and remove the source element.
   function parseOptions(el){
-    var raw = el.getAttribute('data-inline-options');
-    var opts = raw ? JSON.parse(raw) : {};
-    return extend(opts, { ignore: false, preserve: false });
+    var s = el.getAttribute('data-inline-options') || '';
+    return { ignore: /ignore/.test(s), preserve: /preserve/.test(s) };
   }
 
   // remove element from the dom
@@ -82,8 +81,13 @@
   function inlineStyle(elStyle){
     //console.log('elStyle', elStyle)
     var doc = elStyle.ownerDocument;
-    var rules = [].slice.call(elStyle.sheet.cssRules);
-    rules
+    var rules = elStyle.sheet.cssRules;
+    if(!rules){
+      console.error('stylesheet rules cannot be read from ', elStyle.href);
+      return;
+    }
+
+   [].slice.call(rules)
       // only STYLE_RULEs
       // see: https://developer.mozilla.org/en-US/docs/Web/API/CSSRule#Type_constants
       .filter(function(r){ return r.type == 1;})

@@ -21,11 +21,11 @@ require(['mocha', 'chai', 'inline-styles'], function(mocha, chai, inlineStyles){
 
 
   function createFixture(done){
-    var el = document.createElement('iframe');
-    el.setAttribute('id', 'fixture');
-    el.src = 'fixture.html';
+    var el = document.createElement('iframe')
+    el.setAttribute('id', 'fixture')
+    el.src = 'fixture.html'
     el.addEventListener('load', function(e){
-      done();
+      done()
     })
     document.body.appendChild(el);
   }
@@ -46,45 +46,52 @@ require(['mocha', 'chai', 'inline-styles'], function(mocha, chai, inlineStyles){
 
     it('should be a function', function(){
       assert.isFunction(inlineStyles);
-    });
+    })
 
     it('should apply style tag/link rules to style attributes', function(){
-      var doc = getFixture().contentDocument;
-      var elReg = doc.querySelector('p');
-      var elSuper = doc.querySelector('p.super');
-      var elPara = doc.getElementById('para');
-      var elInline = doc.querySelector('p[style]');
+      var doc = getFixture().contentDocument
+      var elReg = doc.querySelector('p')
+      var elSuper = doc.querySelector('p.super')
+      var elPara = doc.getElementById('para')
+      var elInline = doc.querySelector('p[style]')
 
-      inlineStyles(doc);
+      inlineStyles(doc)
 
       assert.equal(elReg.style.color, 'rgb(0, 0, 255)')
       assert.equal(elSuper.style.color, 'rgb(255, 0, 0)')
       assert.equal(elPara.style.color, 'rgb(0, 255, 0)')
       assert.equal(elInline.style.color, 'purple')
       assert.equal(elReg.style.textTransform, 'uppercase')
-    });
+    })
 
     it('should remove style and link tags', function(){
-      var doc = getFixture().contentDocument;
-      inlineStyles(doc);
+      var doc = getFixture().contentDocument
+
+      inlineStyles(doc)
+
       assert.equal(doc.querySelectorAll('style, link').length, 0)
-    });
+    })
 
-    it('should respect opt-out options in [data-inline-options] attributes `{"ignore": true, "preserve": true}`', function(){
-      var doc = getFixture().contentDocument;
-      var elReg = doc.querySelector('p');
+    it('should NOT apply rules of a style/link when `data-inline-options="ignore"`', function(){
+      var doc = getFixture().contentDocument
+      var elReg = doc.querySelector('p')
+      doc.querySelector('link[rel="stylesheet"]').setAttribute('data-inline-options', 'ignore')
 
-      doc.querySelector('link[rel="stylesheet"]').setAttribute('data-inline-options', '{"ignore": true}');
-      doc.querySelector('style').setAttribute('data-inline-options', '{"preserve": true}');
+      inlineStyles(doc)
 
-      inlineStyles(doc);
+      assert.notEqual(elReg.style.textTransform, 'uppercase')
 
-      assert.equal(doc.querySelectorAll('style, link').length, 1, 'style should be preserved in the doc')
-      assert.notEqual(elReg.style.textTransform, 'uppercase', 'link should be disabled and not applied')
+    })
 
-    });
+    it('should NOT remove style/link elements when `data-inline-options="preserve"`', function(){
+      var doc = getFixture().contentDocument
+      doc.querySelector('style').setAttribute('data-inline-options', 'preserve')
 
+      inlineStyles(doc)
 
+      assert.equal(doc.querySelectorAll('style, link').length, 1)
+
+    })
 
   });
 

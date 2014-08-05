@@ -42,6 +42,21 @@ transformed:
 </html>
 ```
 
+## options
+
+By default, `style`/`link` elements are removed from the document. 
+Also, all `style`/`link` elements are active during `window.getComputedStyle`. These behaviors can be overridden on individual elements.
+
+```html
+<style data-inline-options="preserve, ignore">
+  /* 
+  media queries, pseudo selectors, and other rules 
+  that either cannot be inlined, or will taint the 
+  inlined style.
+  */
+</style>
+```
+
 
 -----------------------------------------------
 TODO:
