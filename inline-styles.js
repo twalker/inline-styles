@@ -1,23 +1,18 @@
 /**
  * inlineStyles
- * Inlines styles from style/link tags to style attributes.
- *
- * Uses values from computed values instead of style properties, to take advantage
- * of browsers css specificity/cascade implementation.
- * Document needs to be in a window for styles to be calculated properly.
+ * Transplants styles from style/link tags to style attributes.
  *
  * @example
  * inlineStyles(window.document)
  *
+ * `document` argument needs to be in a window for styles to be calculated properly.
+ * Uses values from computed values instead of style properties, to take advantage
+ * of browsers css specificity/cascade implementation.
+ *
  * By default, style/link tags are inlined, then removed from the document.
  * These options can be opted out of with a `data-inline-options` attribute.
  * Preserved tags will be inlined, but not removed from the document.
- * Ignored tags will be disabled during inlining.
- *
- * @example
- * <style type="text/css" data-inline-options='preserve, ignore'>...</style>
- *
- *
+ * Ignored tags will be disabled during inlining. See unit test for more detail.
  *
  */
 // UMD's amdWeb pattern
