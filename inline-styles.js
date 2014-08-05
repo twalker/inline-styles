@@ -15,12 +15,8 @@
  * Ignored tags will be disabled during inlining, and restored after inlining.
  *
  * @example
- * <style type="text/css" data-inline-options='preserve, ignore}'>...</style>
+ * <style type="text/css" data-inline-options='preserve, ignore'>...</style>
  *
- * TODO:
- * - ?? anything special for media rules MEDIA_RULE = 4 ??
- * - ?? pseudo selectors (2nd arg to getComputedStyle)??
- * - ?? should tags be moved from head to body??
  *
  *
  */
@@ -125,6 +121,14 @@ function extend(target, source){
 
     // cleanup
     tags2remove.forEach(removeElement);
+
+    // move any remaining tags in the head to the body
+    [].slice.call(doc.head.querySelectorAll('style, link[rel="stylesheet"]'))
+      .reverse()
+      .forEach(function(el){
+        el.removeAttribute('data-inline-options')
+        doc.body.insertBefore(el, doc.body.firstChild);
+      })
 
     return doc;
   };

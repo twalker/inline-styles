@@ -8,6 +8,7 @@ before:
 <html>
   <head>
     <link rel="stylesheet" href="example.css" />
+    <link rel="stylesheet" href="advanced.css" data-inline-options="preserve, ignore" />
     <style>
       p.super {
         color: red;
@@ -36,6 +37,7 @@ transformed:
 <html>
   <head></head>
   <body>
+    <link rel="stylesheet" href="advanced.css" />
     <p class="super" style="font-weight: normal; color: rgb(255, 0, 0); text-align: right; margin: 15px 5px 5px;">super</p>
     <p style="font-weight: bold; color: rgb(0, 0, 255); margin: 5px;">blue and bold</p>
   </body>
@@ -56,9 +58,11 @@ Also, all `style`/`link` elements are active during `window.getComputedStyle`. T
   */
 </style>
 ```
-
+Any preserved `style`/`link` elements will be moved inside the `body` tag and have the `data-inline-options` removed.
 
 -----------------------------------------------
+
 TODO:
 
-* R&D for pseudo selectors (2nd arg to getComputedStyle)
+* ?? anything special for media rules MEDIA_RULE = 4 ??
+* ?? R&D pseudo selectors (2nd arg to getComputedStyle)??

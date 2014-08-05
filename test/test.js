@@ -93,6 +93,17 @@ require(['mocha', 'chai', 'inline-styles'], function(mocha, chai, inlineStyles){
 
     })
 
+    it('should move remaining style/link elements in the head, to the body', function(){
+      var doc = getFixture().contentDocument
+      var style = doc.querySelector('style')
+      style.setAttribute('data-inline-options', 'preserve')
+
+      inlineStyles(doc)
+
+      assert.equal(style.parentNode, doc.body)
+
+    })
+
   });
 
   mocha.run();
