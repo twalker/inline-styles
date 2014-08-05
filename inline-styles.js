@@ -31,15 +31,6 @@
   }
 }(this, function(){
 
-// utility to assign defaults to options
-function extend(target, source){
-  target = target || {};
-  for (var prop in source) {
-    if(!target.hasOwnProperty(prop)) target[prop] = source[prop];
-  }
-  return target;
-}
-
   // parses the styliner options attribute
   // default is to inline the styles and remove the source element.
   function parseOptions(el){
