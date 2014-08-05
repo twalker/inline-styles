@@ -5,7 +5,7 @@
  * @example
  * inlineStyles(window.document)
  *
- * `document` argument needs to be in a window for styles to be calculated properly.
+ * `document` argument needs to be in a window for styles to be computed properly.
  * Uses values from computed values instead of style properties, to take advantage
  * of browsers css specificity/cascade implementation.
  *
@@ -39,7 +39,7 @@
   }
 
   // inlines a rule onto an element's style attribute;
-  // setting the element's inline style attribute with calulated properties.
+  // setting the element's inline style attribute with computed values.
   function inlineRule(el, rule){
     //console.log('setting', el, rule.style)
     //console.log('cssText', rule.cssText);
