@@ -6,13 +6,13 @@
  * inlineStyles(window.document)
  *
  * `document` argument needs to be in a window for styles to be computed properly.
- * Uses values from computed values instead of style properties, to take advantage
- * of browsers css specificity/cascade implementation.
+ * Uses values from computed values instead of CSSRule values, to take advantage
+ * of browsers' css specificity/cascade implementation.
  *
  * By default, style/link tags are inlined, then removed from the document.
  * These options can be opted out of with a `data-inline-options` attribute.
- * Preserved tags will be inlined, but not removed from the document.
- * Ignored tags will be disabled during inlining. See unit test for more detail.
+ * `preserve`d tags will be inlined, but not removed from the document.
+ * `ignore`d tags will be disabled during inlining. See unit test for more detail.
  *
  */
 // UMD's amdWeb pattern
@@ -42,8 +42,8 @@
     return el.parentNode.removeChild(el);
   }
 
-  // ensures elements matching a rule have the associted properties
-  // set inline--using computed values.
+  // ensures elements matching a rule
+  // have their associated properties set inline.
   function inlineRule(el, rule){
     var computed = window.getComputedStyle(el);
     for(var i = 0; i < rule.style.length; i++){

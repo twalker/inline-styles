@@ -1,20 +1,25 @@
 inline-styles
 =============
 
-Transplants styles from style/link tags to style attributes using the browser's computedStyles. Useful when preparing a document to be sent via email, since email clients like their styles inline.
+Transplants styles from `style`/`link` tags to `style` attributes using the browser's computedStyles. Useful when preparing a document to be sent via email. Email clients like to have their styles inline.
 
-A few server-side libraries inline CSS styles quite well. 
-But, CSS algorithms and specificity can get a bit tricky to properly emulate.
-Why emulate when current browsers are the masters of CSS?
-Let's make them do the css inlining work.
+A few server-side libraries inline CSS styles splendidly, especially [juice](https://github.com/Automattic/juice). 
+But hey, current browsers are pretty darn good with CSS too.
 
 
-before:
+**before:**
+
+example.css
+```css
+p + p {
+  text-transform: capitalize;
+}
+```
+
 ```html
 <html>
   <head>
     <link rel="stylesheet" href="example.css" />
-    <link rel="stylesheet" href="advanced.css" data-inline-options="preserve, ignore" />
     <style>
       p.super {
         color: red;
@@ -36,16 +41,16 @@ before:
 </html>
 ```
 
+
 `inlineStyles(window.document);`
 
-transformed:
+**transplanted**
 ```html
 <html>
   <head></head>
   <body>
-    <link rel="stylesheet" href="advanced.css" />
     <p class="super" style="font-weight: normal; color: rgb(255, 0, 0); text-align: right; margin: 15px 5px 5px;">super</p>
-    <p style="font-weight: bold; color: rgb(0, 0, 255); margin: 5px;">blue and bold</p>
+    <p style="font-weight: bold; color: rgb(0, 0, 255); margin: 5px; text-transform: capitalize;">blue and bold</p>
   </body>
 </html>
 ```
