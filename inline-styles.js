@@ -27,7 +27,7 @@
 }(this, function(){
 
   // create an array from arrayish lists
-  function list2array(nodelist){
+  function arrayFrom(nodelist){
     return [].slice.call(nodelist);
   }
 
@@ -69,12 +69,12 @@
       return;
     }
 
-    list2array(rules)
+    arrayFrom(rules)
       // only STYLE_RULEs
       // see: https://developer.mozilla.org/en-US/docs/Web/API/CSSRule#Type_constants
       .filter(function(r){ return r.type == 1;})
       .forEach(function(rule){
-        list2array(doc.querySelectorAll(rule.selectorText))
+        arrayFrom(doc.querySelectorAll(rule.selectorText))
           .forEach(function(el){
             inlineRule(el, rule);
           })
@@ -84,7 +84,7 @@
   // takes a rendered document and inlines its stylesheets.
   return function inlineStyles(doc){
 
-    var tags = list2array(doc.querySelectorAll('style, link[rel="stylesheet"]')),
+    var tags = arrayFrom(doc.querySelectorAll('style, link[rel="stylesheet"]')),
         tags2inline = [],
         tags2remove = [],
         tags2ignore = [];
@@ -109,7 +109,7 @@
     tags2remove.forEach(removeElement);
 
     // move any remaining tags in the head to the body
-    list2array(doc.head.querySelectorAll('style, link[rel="stylesheet"]'))
+    arrayFrom(doc.head.querySelectorAll('style, link[rel="stylesheet"]'))
       .reverse()
       .forEach(function(el){
         el.removeAttribute('data-inline-options')

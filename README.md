@@ -1,13 +1,12 @@
 inline-styles
 =============
 
-Transplants styles from style/link tags to style attributes using the browser's computedStyles. Preps a document for sending via email, since
-email clients like their styles inline.
+Transplants styles from style/link tags to style attributes using the browser's computedStyles. Useful when preparing a document to be sent via email, since email clients like their styles inline.
 
-Plenty of server-side libraries inline css styles quite well.
-But, why re-invent CSSOM and CSS algorithms on the server when 
-current browsers are the masters of that sh*t. 
-Well... except IE.
+A few server-side libraries inline CSS styles quite well. 
+But, CSS algorithms and specificity can get a bit tricky to properly emulate.
+Why emulate when current browsers are the masters of CSS?
+Let's make them do the css inlining work.
 
 
 before:
@@ -73,7 +72,3 @@ Any preserved `style`/`link` elements will also be moved inside the `body` tag a
 
 -----------------------------------------------
 
-TODO:
-
-* ?? anything special for media rules MEDIA_RULE = 4 ??
-* ?? R&D pseudo selectors (2nd arg to getComputedStyle)??
