@@ -1,7 +1,14 @@
 inline-styles
 =============
 
-Transplants styles from style/link tags to style attributes, in the browser, for use in email.
+Transplants styles from style/link tags to style attributes using the browser's computedStyles. Preps a document for sending via email, since
+email clients like their styles inline.
+
+Plenty of server-side libraries inline css styles quite well.
+But, why re-invent CSSOM and CSS algorithms on the server when 
+current browsers are the masters of that sh*t. 
+Well... except IE.
+
 
 before:
 ```html

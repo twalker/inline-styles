@@ -26,8 +26,12 @@
   }
 }(this, function(){
 
-  // parses the styliner options attribute
-  // default is to inline the styles and remove the source element.
+  // create an array from arrayish lists
+  function list2array(nodelist){
+    return [].slice.call(nodelist);
+  }
+
+  // parses the value of `inline-options` attribute
   function parseOptions(el){
     var s = el.getAttribute('data-inline-options') || '';
     return { ignore: /ignore/.test(s), preserve: /preserve/.test(s) };
@@ -38,28 +42,24 @@
     return el.parentNode.removeChild(el);
   }
 
-  // inlines a rule onto an element's style attribute;
-  // setting the element's inline style attribute with computed values.
+  // ensures elements matching a rule have the associted properties
+  // set inline--using computed values.
   function inlineRule(el, rule){
-    //console.log('setting', el, rule.style)
-    //console.log('cssText', rule.cssText);
-    //console.log('style', rule.style);
     var computed = window.getComputedStyle(el);
     for(var i = 0; i < rule.style.length; i++){
       var prop = rule.style.item(i);
       var computedVal = computed.getPropertyValue(prop);
       // if element's style attribute doesn't have this property,
       // then set it to the computed value
-      //console.log('is prop null', el.style.getPropertyValue(prop))
       if(!el.style.getPropertyValue(prop)){
         el.style.setProperty(prop, computedVal);
       }
     }
   }
 
-  // Loops through a stylesheets rules,
-  // selects the rule's targeted elements,
-  // and inlines the rule.
+  // Loops through a stylesheet's rules,
+  // selects each rule's targeted elements, and
+  // ensures matching properties have been inlined.
   function inlineStyle(elStyle){
     //console.log('elStyle', elStyle)
     var doc = elStyle.ownerDocument;
@@ -69,12 +69,12 @@
       return;
     }
 
-   [].slice.call(rules)
+    list2array(rules)
       // only STYLE_RULEs
       // see: https://developer.mozilla.org/en-US/docs/Web/API/CSSRule#Type_constants
       .filter(function(r){ return r.type == 1;})
       .forEach(function(rule){
-        [].slice.call(doc.querySelectorAll(rule.selectorText))
+        list2array(doc.querySelectorAll(rule.selectorText))
           .forEach(function(el){
             inlineRule(el, rule);
           })
@@ -84,7 +84,7 @@
   // takes a rendered document and inlines its stylesheets.
   return function inlineStyles(doc){
 
-    var tags = [].slice.call(doc.querySelectorAll('style, link[rel="stylesheet"]')),
+    var tags = list2array(doc.querySelectorAll('style, link[rel="stylesheet"]')),
         tags2inline = [],
         tags2remove = [],
         tags2ignore = [];
@@ -109,7 +109,7 @@
     tags2remove.forEach(removeElement);
 
     // move any remaining tags in the head to the body
-    [].slice.call(doc.head.querySelectorAll('style, link[rel="stylesheet"]'))
+    list2array(doc.head.querySelectorAll('style, link[rel="stylesheet"]'))
       .reverse()
       .forEach(function(el){
         el.removeAttribute('data-inline-options')
