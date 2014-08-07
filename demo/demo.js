@@ -8,7 +8,7 @@ require.config({
   }
 });
 
-require(['inline-styles', 'text!example.html'], function(inlineStyles, fixture){
+require(['inline-styles', 'text!mc-template.html'], function(inlineStyles, fixture){
 
   var iframe = document.getElementById('iframe');
   var form = document.querySelector('form');
@@ -26,8 +26,9 @@ require(['inline-styles', 'text!example.html'], function(inlineStyles, fixture){
   var onSubmit = function(e){
     e.preventDefault();
     var doc = iframe.contentDocument;
-
+    console.time('inlineStyles');
     inlineStyles(doc);
+    console.timeEnd('inlineStyles')
     form.querySelector('[name="dest"]').value = doc.head.outerHTML + '\n' + doc.body.outerHTML;
 
   };
