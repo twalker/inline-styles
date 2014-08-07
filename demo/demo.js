@@ -16,7 +16,7 @@ require(['inline-styles', 'text!mc-template.html'], function(inlineStyles, fixtu
   src.value = fixture;
 
   src.addEventListener('input', function(e){
-    console.log('input', iframe);
+    //console.log('input', iframe);
     //iframe.src = 'data:text/html,' + e.currentTarget.value;
     iframe.srcdoc = e.currentTarget.value;
   })
@@ -30,6 +30,10 @@ require(['inline-styles', 'text!mc-template.html'], function(inlineStyles, fixtu
     inlineStyles(doc);
     console.timeEnd('inlineStyles')
     form.querySelector('[name="dest"]').value = doc.head.outerHTML + '\n' + doc.body.outerHTML;
+
+    var inputLength = form.querySelector('[name="src"]').value.length
+    var outputLength = form.querySelector('[name="dest"]').value.length
+    console.log('length difference:', outputLength - inputLength, 'characters' )
 
   };
   form.addEventListener('submit', onSubmit)
