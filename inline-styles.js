@@ -70,9 +70,15 @@
     }
 
     arrayFrom(rules)
-      // only STYLE_RULEs
+      // only STYLE_RULEs, and no pseudo selectors or starting stars
       // see: https://developer.mozilla.org/en-US/docs/Web/API/CSSRule#Type_constants
-      .filter(function(r){ return r.type == 1;})
+      .filter(function(r){
+        return r.type == 1 &&
+          // no pseudo selectors
+          !(/:/.test(r.selectorText)) &&
+          // no starting stars (universal selector)
+          !(/^\*/.test(r.selectorText));
+      })
       .forEach(function(rule){
         arrayFrom(doc.querySelectorAll(rule.selectorText))
           .forEach(function(el){
