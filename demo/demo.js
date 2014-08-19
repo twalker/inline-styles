@@ -8,7 +8,7 @@ require.config({
   }
 });
 
-require(['inline-styles', 'text!mc-template.html'], function(inlineStyles, fixture){
+require(['inline-styles', 'text!example.html'], function(inlineStyles, fixture){
 
   var iframe = document.getElementById('iframe');
   var form = document.querySelector('form');
