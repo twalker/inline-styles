@@ -1,0 +1,5 @@
+{
+  "ignoreSslErrors": true,
+  "localToRemoteUrlAccessEnabled": true,
+  "webSecurityEnabled": false
+}
