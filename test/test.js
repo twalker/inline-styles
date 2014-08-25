@@ -54,6 +54,7 @@ require(['mocha', 'chai', 'inline-styles'], function(mocha, chai, inlineStyles){
       var elSuper = doc.querySelector('p.super')
       var elPara = doc.getElementById('para')
       var elInline = doc.querySelector('p[style]')
+      var elSection = doc.querySelector('section')
 
       inlineStyles(doc)
 
@@ -62,6 +63,7 @@ require(['mocha', 'chai', 'inline-styles'], function(mocha, chai, inlineStyles){
       assert.equal(elPara.style.color, 'rgb(0, 255, 0)')
       assert.equal(elInline.style.color, 'purple')
       assert.equal(elReg.style.textTransform, 'uppercase')
+      assert.equal(elSection.style.width, '50%')
     })
 
     it('should remove style and link tags', function(){

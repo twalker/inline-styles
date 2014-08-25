@@ -105,8 +105,19 @@
     // disable ignored tags so they're not a part of the computedStyles
     tags2ignore.forEach(function(el){el._prevDisabled = el.disabled;  el.disabled = true; });
 
+    // WORKAROUND:
+    // Computed styles will calculate non-pixel unit values (e.g. % percentages) into pixel values.
+    // Hidden elements retain their non-pixel unit values.
+    // see: http://stackoverflow.com/questions/8387419/retrieving-percentage-css-values-in-firefox
+    // As a workaround, temporarily hide the entire body.
+    var bodyDisplay = doc.body.style.display;
+    doc.body.style.display = 'none';
+
     // inline link/style rules
     tags2inline.forEach(inlineStyle);
+
+    // restore original display property
+    doc.body.style.display = bodyDisplay;
 
     // re-enable ignored tags, restoring their original disabled state
     tags2ignore.forEach(function(el){ el.disabled = el._prevDisabled;});
