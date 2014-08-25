@@ -25,7 +25,7 @@ page.open(url, function (status) {
   } else {
 
     // modify phantom document and obtain the outerHTML.
-    page.injectJs('clean-artifacts.js');
+    page.injectJs('../clean-artifacts.js');
     page.injectJs('../inline-styles.js');
     var out = page.evaluate(function onEvaluate(){
       // removing editor artifacts
