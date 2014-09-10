@@ -29,7 +29,7 @@ require(['inline-styles', 'text!example.html'], function(inlineStyles, fixture){
     console.time('inlineStyles');
     inlineStyles(doc);
     console.timeEnd('inlineStyles')
-    form.querySelector('[name="dest"]').value = doc.head.outerHTML + '\n' + doc.body.outerHTML;
+    form.querySelector('[name="dest"]').value = doc.documentElement.outerHTML;
 
     var inputLength = form.querySelector('[name="src"]').value.length
     var outputLength = form.querySelector('[name="dest"]').value.length
