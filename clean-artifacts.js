@@ -30,7 +30,7 @@
 
   // removes all the wf* attributes used by the editor.
   function removeAttributes(doc){
-    var editorAttrs = 'data-wfcb data-wflabel data-wfcz data-wfedit data-wfstyle draggable'.split(' ');
+    var editorAttrs = 'data-wfcb data-wflabel data-wfcz data-wfedit data-wfstyle draggable data-dnd'.split(' ');
     editorAttrs.forEach(function(attr){
       removeAttribute(doc, attr);
     });
