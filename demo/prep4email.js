@@ -1,7 +1,5 @@
 /**
  * prep4email is a PhantomJS script that applies inline-styles to a document.
- * An additional cleanup script is run against the document to remove artifacts
- * from a proprietary editor.
  *
  * @example
  * phantomjs --config=prep4email-config.json prep4email.js http://localhost:3000/demo/example.html
@@ -25,11 +23,8 @@ page.open(url, function (status) {
   } else {
 
     // modify phantom document and obtain the outerHTML.
-    page.injectJs('../clean-artifacts.js');
     page.injectJs('../inline-styles.js');
     var out = page.evaluate(function onEvaluate(){
-      // removing editor artifacts
-      cleanArtifacts(document);
       // inline styles
       inlineStyles(document);
       // return modified phantom document as html string

@@ -1,6 +1,6 @@
 {
   "name": "inline-styles",
-  "version": "0.0.4",
+  "version": "0.0.6",
   "main": "inline-styles.js",
   "license": "MIT",
   "keywords": [
@@ -17,7 +17,7 @@
   ],
   "dependencies": {},
   "devDependencies": {
-    "requirejs": "2.1.14",
+    "requirejs": "2.1.15",
     "requirejs-text": "~2.0.12",
     "mocha": "~1.21.4",
     "chai": "1.9.1"
